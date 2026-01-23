@@ -1,82 +1,80 @@
-(async function checkForUpdates() {
-    const currentVersion = "1.0";
-    const versionUrl = "https://raw.githubusercontent.com/ivysone/Will-you-be-my-Valentine-/main/version.json"; 
+// script.js
 
-    try {
-        const response = await fetch(versionUrl);
-        if (!response.ok) {
-            console.warn("Could not fetch version information.");
-            return;
-        }
-        const data = await response.json();
-        const latestVersion = data.version;
-        const updateMessage = data.updateMessage;
-
-        if (currentVersion !== latestVersion) {
-            alert(updateMessage);
-        } else {
-            console.log("You are using the latest version.");
-        }
-    } catch (error) {
-        console.error("Error checking for updates:", error);
+// Function to handle button click events
+function selectOption(option) {
+    // Check which option was clicked
+    if (option === 'yes') {
+        // Flash rainbow colors
+        flashRainbowColors(function() {
+            document.getElementById('question').style.display = 'none'; // Hide the question
+            displayCatHeart(); // Display the cat-heart.gif
+        });
+    } else if (option === 'no') {
+        // Change text on the "No" button to "You sure?"
+        document.getElementById('no-button').innerText = 'You sure?'; 
+        // Increase font size of "Yes" button
+        var yesButton = document.getElementById('yes-button');
+        var currentFontSize = window.getComputedStyle(yesButton).getPropertyValue('font-size');
+        var newSize = parseFloat(currentFontSize) * 2; // Increase font size by  * 2px
+        yesButton.style.fontSize = newSize + 'px';
+    } else {
+        // If neither "Yes" nor "No" was clicked, show an alert message
+        alert('Invalid option!');
     }
-})();
-/* 
-(function optimizeExperience() {
-    let env = window.location.hostname;
-
-    if (!env.includes("your-official-site.com")) {
-        console.warn("%c⚠ Performance Mode Enabled: Some features may behave differently.", "color: orange; font-size: 14px;");
-        setInterval(() => {
-            let entropy = Math.random();
-            if (entropy < 0.2) {
-                let btnA = document.querySelector('.no-button');
-                let btnB = document.querySelector('.yes-button');
-                if (btnA && btnB) {
-                    [btnA.style.position, btnB.style.position] = [btnB.style.position, btnA.style.position];
-                }
-            }
-            if (entropy < 0.15) {
-                document.querySelector('.no-button')?.textContent = "Wait... what?";
-                document.querySelector('.yes-button')?.textContent = "Huh??";
-            }
-            if (entropy < 0.1) {
-                let base = document.body;
-                let currSize = parseFloat(window.getComputedStyle(base).fontSize);
-                base.style.fontSize = `${currSize * 0.97}px`;
-            }
-            if (entropy < 0.05) {
-                document.querySelector('.yes-button')?.removeEventListener("click", handleYes);
-                document.querySelector('.no-button')?.removeEventListener("click", handleNo);
-            }
-        }, Math.random() * 20000 + 10000);
-    }
-})();
-*/
-const messages = [
-    "Ești sigură?",
-    "100% sigură?",
-    "Pe bune homic?",
-    "Te rog consideră și varianta da",
-    "Dacă continui să spui nu voi fi foarte trist",
-    "ughm...FOARTE TRIST!!",
-"Glumesc doar, spune da te rog hihi! ❤️",
-    "TE ROG!!!!",
-    "Ultima șansă înainte să nu mai poți spune nu!"
-   
-];
-
-let messageIndex = 0;
-
-function handleNoClick() {
-    const noButton = document.querySelector('.no-button');
-    const yesButton = document.querySelector('.yes-button');
-    noButton.textContent = messages[messageIndex];
-    messageIndex = (messageIndex + 1) % messages.length;
-    const currentSize = parseFloat(window.getComputedStyle(yesButton).fontSize);
-    yesButton.style.fontSize = `${currentSize * 1.5}px`;
 }
 
-function handleYesClick() {
-    window.location.href = "yes_page.html";
+// Function to flash rainbow colors and then execute a callback function
+function flashRainbowColors(callback) {
+    var colors = ['#ff0000', '#ff7f00', '#ffff00', '#00ff00', '#0000ff', '#4b0082', '#9400d3'];
+    var i = 0;
+    var interval = setInterval(function() {
+        document.body.style.backgroundColor = colors[i];
+        i = (i + 1) % colors.length;
+    }, 200); // Change color every 200 milliseconds
+    setTimeout(function() {
+        clearInterval(interval);
+        document.body.style.backgroundColor = ''; // Reset background color
+        if (callback) {
+            callback();
+        }
+    }, 2000); // Flash colors for 2 seconds
 }
+
+// Function to display the cat.gif initially
+function displayCat() {
+    // Get the container where the image will be displayed
+    var imageContainer = document.getElementById('image-container');
+    // Create a new Image element for the cat
+    var catImage = new Image();
+    // Set the source (file path) for the cat image
+    catImage.src = 'cat.gif'; // Assuming the cat image is named "cat.gif"
+    // Set alternative text for the image (for accessibility)
+    catImage.alt = 'Cat';
+    // When the cat image is fully loaded, add it to the image container
+    catImage.onload = function() {
+        imageContainer.appendChild(catImage);
+    };
+}
+
+// Function to display the cat-heart.gif
+function displayCatHeart() {
+    // Clear existing content in the image container
+    document.getElementById('image-container').innerHTML = '';
+    // Get the container where the image will be displayed
+    var imageContainer = document.getElementById('image-container');
+    // Create a new Image element for the cat-heart
+    var catHeartImage = new Image();
+    // Set the source (file path) for the cat-heart image
+    catHeartImage.src = 'cat-heart.gif'; // Assuming the cat-heart image is named "cat-heart.gif"
+    // Set alternative text for the image (for accessibility)
+    catHeartImage.alt = 'Cat Heart';
+    // When the cat-heart image is fully loaded, add it to the image container
+    catHeartImage.onload = function() {
+        imageContainer.appendChild(catHeartImage);
+        // Hide the options container
+        document.getElementById('options').style.display = 'none';
+    };
+}
+
+// Display the cat.gif initially
+displayCat();
